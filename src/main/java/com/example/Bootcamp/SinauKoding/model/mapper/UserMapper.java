@@ -12,6 +12,7 @@ import java.util.List;
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
+    @Mapping(source = "name", target = "profileName")
     User toEntity(UserDTO dto);
 
     @Mapping(source = "profileName", target = "name")
