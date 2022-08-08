@@ -1,8 +1,8 @@
 package com.example.Bootcamp.SinauKoding.service;
 
-import com.example.Bootcamp.SinauKoding.model.DetailUser;
-import com.example.Bootcamp.SinauKoding.model.RoleUser;
 import com.example.Bootcamp.SinauKoding.model.User;
+import com.example.Bootcamp.SinauKoding.model.mapper.UserMapper;
+import com.example.Bootcamp.SinauKoding.model.dto.UserDTO;
 import com.example.Bootcamp.SinauKoding.repository.DetailUserRepository;
 import com.example.Bootcamp.SinauKoding.repository.RoleUserRepository;
 import com.example.Bootcamp.SinauKoding.repository.UserRepository;
@@ -23,13 +23,13 @@ public class UserService {
     @Autowired
     RoleUserRepository roleUserRepository;
 
-    public List<User> findAllUser() {
-        return repository.findAll();
+    public List<UserDTO> findAllUser() {
+        return UserMapper.INSTANCE.toListDTO(repository.findAll());
     }
 
     @Transactional
-    public User createUser(User param) {
-        User user = param;
+    public UserDTO createUser(UserDTO param) {
+        User user = UserMapper.INSTANCE.toEntity(param);
         user = repository.save(user);
 
 //        DetailUser detailUser = detailUserRepository.save(param.getDetailUser());
@@ -38,7 +38,7 @@ public class UserService {
 //
 //        user.setDetailUser(detailUser);
 //        user.setRole(roleUser);
-        return user;
+        return UserMapper.INSTANCE.toDto(user);
     }
 
     public void deleteUser(int id) {

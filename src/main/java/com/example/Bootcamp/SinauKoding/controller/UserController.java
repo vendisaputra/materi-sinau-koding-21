@@ -1,6 +1,7 @@
 package com.example.Bootcamp.SinauKoding.controller;
 
 import com.example.Bootcamp.SinauKoding.model.User;
+import com.example.Bootcamp.SinauKoding.model.dto.UserDTO;
 import com.example.Bootcamp.SinauKoding.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,8 +20,8 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<?> saveUser(@RequestBody User user) {
-        return new ResponseEntity(service.createUser(user), HttpStatus.OK);
+    public ResponseEntity<?> saveUser(@RequestBody UserDTO param) {
+        return new ResponseEntity(service.createUser(param), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
