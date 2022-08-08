@@ -1,5 +1,6 @@
 package com.example.Bootcamp.SinauKoding.controller;
 
+import com.example.Bootcamp.SinauKoding.common.Response;
 import com.example.Bootcamp.SinauKoding.model.User;
 import com.example.Bootcamp.SinauKoding.model.dto.UserDTO;
 import com.example.Bootcamp.SinauKoding.service.UserService;
@@ -15,24 +16,38 @@ public class UserController {
     UserService service;
 
     @GetMapping
-    public ResponseEntity<?> findAllUser() {
-        return new ResponseEntity(service.findAllUser(), HttpStatus.OK);
+    public Response findAllUser() {
+        return new Response(
+                service.findAllUser(),
+                service.findAllUser().size(),
+                HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<?> saveUser(@RequestBody UserDTO param) {
-        return new ResponseEntity(service.createUser(param), HttpStatus.OK);
+    public Response saveUser(@RequestBody UserDTO param) {
+        return new Response(
+                service.createUser(param),
+                "Data Berhasil Disimpan!",
+                HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable Integer id) {
-        service.deleteUser(id);
-        return new ResponseEntity("Berhasil dihapus", HttpStatus.OK);
+    public Response deleteUser(@PathVariable Integer id) {
+        if (service.deleteUser(id)){
+            return new Response("Berhasil dihapus", HttpStatus.OK);
+        }
+
+        return new Response("Gagal dihapus", HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Integer id,
                                         @RequestBody User user) {
         return new ResponseEntity(service.updateUser(id, user), HttpStatus.OK);
+    }
+
+    @GetMapping("/find-by-id/{id}")
+    public Response getById(@PathVariable Integer id){
+        return new Response(service.findById(id), "Data ditemukan", HttpStatus.OK);
     }
 }

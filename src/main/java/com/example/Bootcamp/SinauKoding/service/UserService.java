@@ -41,9 +41,15 @@ public class UserService {
         return UserMapper.INSTANCE.toDto(user);
     }
 
-    public void deleteUser(int id) {
+    public boolean deleteUser(int id) {
         User data = repository.findById(id).orElseThrow(null);
-        repository.delete(data);
+
+        try {
+            repository.delete(data);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 
     public User updateUser(int id, User user) {
@@ -54,5 +60,9 @@ public class UserService {
         data.setPhone(user.getPhone() != null ? user.getPhone() : data.getPhone());
 
         return repository.save(data);
+    }
+
+    public UserDTO findById(Integer id){
+        return UserMapper.INSTANCE.toDto(repository.findById(id).orElseThrow(null));
     }
 }
