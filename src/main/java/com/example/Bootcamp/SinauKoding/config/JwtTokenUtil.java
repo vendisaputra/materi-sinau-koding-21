@@ -19,6 +19,7 @@ public class JwtTokenUtil {
     @Value("${jwt.secret}")
     private String secret;
 
+    //Untuk generate token
     public String doGenerateToken(UserDetails userDetails){
         Map<String, Object> claims = new HashMap<>();
 
@@ -28,6 +29,7 @@ public class JwtTokenUtil {
                 .signWith(SignatureAlgorithm.HS512, secret).compact();
     }
 
+    //untuk mendapatkan username dari token
     public String getUsernameFromToken(String token){
         final Claims claims = Jwts.parser().setSigningKey(secret)
                 .parseClaimsJws(token).getBody();
@@ -35,6 +37,7 @@ public class JwtTokenUtil {
         return claims.getSubject();
     }
 
+    //memvalidasi token apakah token sesuai dengan user/token sudah expired
     public Boolean validateToken(String token, User user){
         String username = getUsernameFromToken(token);
         Claims claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();

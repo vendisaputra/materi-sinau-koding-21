@@ -79,9 +79,10 @@ public class UserService {
     public UserDTO doLogin(AuthRequestDTO user){
         User currentUser = repository.findByUsername(user.getUsername());
 
+        //mengecek apakan user kosong, jika kosong maka akan mengembalikan data null
         if (currentUser == null){
             return UserMapper.INSTANCE.toDto(currentUser);
-        }else if (currentUser.getPassword() != null && BCrypt.checkpw(user.getPassword(), currentUser.getPassword())){
+        }else if (currentUser.getPassword() != null && BCrypt.checkpw(user.getPassword(), currentUser.getPassword())){ //mengecek value password dari currentUser apakah tidak sama dengan null, dan membandingkan passwod dari param dan current user menggunakan BCrypt
             UserDetails userDetails = new org.springframework.security.core.userdetails.User(currentUser.getUsername(), currentUser.getPassword(), new ArrayList<>());
 
             currentUser.setToken(jwtTokenUtil.doGenerateToken(userDetails));
@@ -99,6 +100,7 @@ public class UserService {
             return null;
         }
 
+        //menyimpan value dari encripsi password dari parameter menggunakan BCrypt
         param.setPassword(BCrypt.hashpw(param.getPassword(), BCrypt.gensalt()));
 
         user = repository.save(UserMapper.INSTANCE.toUserFromRegistationDTO(param));

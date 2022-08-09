@@ -25,6 +25,7 @@ public class WebSecutiryConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtAuthFilter jwtAuthFilter;
 
+    //url(path) yang di izinkan tanpa menggunkan token
     private static final String[] AUTH_WHITELIST = {
             "/v2/api-docs",
             "/swagger-resources",
@@ -38,6 +39,7 @@ public class WebSecutiryConfig extends WebSecurityConfigurerAdapter {
             "/v3/api-docs/**"
     };
 
+    //configurasi akses dan error handling api
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()

@@ -27,6 +27,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Autowired
     private UserRepository userRepository;
 
+    //configurasi untuk mengecek header dan token dengan ketentuan key header "Authorization"
+    //value Authorization harus ada kata "Bearer " agar token diproses
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String header = request.getHeader("Authorization");

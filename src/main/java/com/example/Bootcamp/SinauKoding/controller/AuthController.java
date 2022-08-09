@@ -18,6 +18,8 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
+
+    //untuk login api
     @PostMapping("/do-login")
     public Response doLogin(@RequestBody AuthRequestDTO param) {
         UserDTO data = userService.doLogin(param);
@@ -25,6 +27,8 @@ public class AuthController {
         return new Response(data, data != null ? "Login Sukses" : "Login gagal", HttpStatus.OK);
     }
 
+
+    //untuk registration api
     @PostMapping("/do-register")
     public Response doRegister(@RequestBody RegistrationDTO param){
         RegistrationDTO data = userService.doRegister(param);

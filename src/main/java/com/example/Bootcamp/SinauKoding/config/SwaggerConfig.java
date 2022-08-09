@@ -44,13 +44,16 @@ public class SwaggerConfig {
         return new Contact("Sinau Koding", "", "");
     }
 
+    //Menambahkan authorize pada swagger
     private SecurityScheme securityScheme() {
         return new ApiKey("Token", "Authorization", "header");
     }
+    //untuk configurasi security(authorization) swagger
     private SecurityContext securityContext(){
         return SecurityContext.builder().securityReferences(defaultAuth()).build();
     }
 
+    //configurasi untuk menentukan scope / batas pada authorized swagger
     private List<SecurityReference> defaultAuth() {
         AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
 
