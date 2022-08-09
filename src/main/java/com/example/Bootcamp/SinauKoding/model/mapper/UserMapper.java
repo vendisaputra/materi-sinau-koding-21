@@ -1,6 +1,7 @@
 package com.example.Bootcamp.SinauKoding.model.mapper;
 
 import com.example.Bootcamp.SinauKoding.model.User;
+import com.example.Bootcamp.SinauKoding.model.dto.RegistrationDTO;
 import com.example.Bootcamp.SinauKoding.model.dto.UserDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -21,4 +22,8 @@ public interface UserMapper {
     List<UserDTO> toListDTO(List<User> list);
 
     List<User> toListEntity(List<UserDTO> data);
+
+    RegistrationDTO toRegistrationDto(User data);
+
+    User toUserFromRegistationDTO(RegistrationDTO dto);
 }

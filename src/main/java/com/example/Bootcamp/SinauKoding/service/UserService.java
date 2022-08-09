@@ -1,15 +1,22 @@
 package com.example.Bootcamp.SinauKoding.service;
 
+import com.example.Bootcamp.SinauKoding.config.JwtTokenUtil;
 import com.example.Bootcamp.SinauKoding.model.User;
+import com.example.Bootcamp.SinauKoding.model.dto.AuthRequestDTO;
+import com.example.Bootcamp.SinauKoding.model.dto.RegistrationDTO;
 import com.example.Bootcamp.SinauKoding.model.mapper.UserMapper;
 import com.example.Bootcamp.SinauKoding.model.dto.UserDTO;
 import com.example.Bootcamp.SinauKoding.repository.DetailUserRepository;
 import com.example.Bootcamp.SinauKoding.repository.RoleUserRepository;
 import com.example.Bootcamp.SinauKoding.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,6 +29,9 @@ public class UserService {
 
     @Autowired
     RoleUserRepository roleUserRepository;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     public List<UserDTO> findAllUser() {
         return UserMapper.INSTANCE.toListDTO(repository.findAll());
@@ -64,5 +74,35 @@ public class UserService {
 
     public UserDTO findById(Integer id){
         return UserMapper.INSTANCE.toDto(repository.findById(id).orElseThrow(null));
+    }
+
+    public UserDTO doLogin(AuthRequestDTO user){
+        User currentUser = repository.findByUsername(user.getUsername());
+
+        if (currentUser == null){
+            return UserMapper.INSTANCE.toDto(currentUser);
+        }else if (currentUser.getPassword() != null && BCrypt.checkpw(user.getPassword(), currentUser.getPassword())){
+            UserDetails userDetails = new org.springframework.security.core.userdetails.User(currentUser.getUsername(), currentUser.getPassword(), new ArrayList<>());
+
+            currentUser.setToken(jwtTokenUtil.doGenerateToken(userDetails));
+
+            return UserMapper.INSTANCE.toDto(currentUser);
+        }
+
+        return null;
+    }
+
+    public RegistrationDTO doRegister(RegistrationDTO param){
+        User user = repository.findByUsername(param.getUsername());
+
+        if (user != null){
+            return null;
+        }
+
+        param.setPassword(BCrypt.hashpw(param.getPassword(), BCrypt.gensalt()));
+
+        user = repository.save(UserMapper.INSTANCE.toUserFromRegistationDTO(param));
+
+        return UserMapper.INSTANCE.toRegistrationDto(user);
     }
 }

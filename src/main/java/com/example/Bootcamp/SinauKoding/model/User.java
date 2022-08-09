@@ -29,6 +29,12 @@ public class User {
     @Column(name = "phone")
     private String phone;
 
+    @Column(name = "password")
+    private String password;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String token;
+
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "detail_user_id")
