@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MenuController {
 
     @GetMapping
-    public ResponseEntity<?> getAll(){
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<?> getAll() {
+        return new ResponseEntity<>("GET MENU", HttpStatus.OK);
     }
 }

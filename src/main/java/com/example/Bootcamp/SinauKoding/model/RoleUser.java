@@ -26,7 +26,7 @@ public class RoleUser {
     @OneToMany(mappedBy = "roleUser")
     private List<RoleMenu> roleMenus;
 
-    @Transient
+
     @OneToMany(mappedBy = "role")
     private List<User> userList;
 }

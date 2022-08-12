@@ -7,6 +7,8 @@ import com.example.Bootcamp.SinauKoding.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,8 +17,19 @@ public class UserController {
     @Autowired
     UserService service;
 
+    @DeleteMapping("/{id}")
+    public Response deleteUser(@PathVariable Integer id) {
+        if (service.deleteUser(id)){
+            System.out.print(SecurityContextHolder.getContext().getAuthentication());
+            return new Response("Berhasil dihapus", HttpStatus.OK);
+        }
+
+        return new Response("Gagal dihapus", HttpStatus.OK);
+    }
+
     @GetMapping
     public Response findAllUser() {
+        System.out.print(SecurityContextHolder.getContext().getAuthentication());
         return new Response(
                 service.findAllUser(),
                 service.findAllUser().size(),
@@ -29,15 +42,6 @@ public class UserController {
                 service.createUser(param),
                 "Data Berhasil Disimpan!",
                 HttpStatus.OK);
-    }
-
-    @DeleteMapping("/{id}")
-    public Response deleteUser(@PathVariable Integer id) {
-        if (service.deleteUser(id)){
-            return new Response("Berhasil dihapus", HttpStatus.OK);
-        }
-
-        return new Response("Gagal dihapus", HttpStatus.OK);
     }
 
     @PutMapping("/{id}")

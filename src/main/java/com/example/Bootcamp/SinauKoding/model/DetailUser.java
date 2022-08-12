@@ -1,5 +1,6 @@
 package com.example.Bootcamp.SinauKoding.model;
 
+import com.fasterxml.jackson.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,7 +21,7 @@ public class DetailUser {
     @Column(name = "religion")
     private String religion;
 
-    @Transient
-    @OneToOne(mappedBy = "detailUser", fetch = FetchType.LAZY)
+
+    @OneToOne(mappedBy = "detailUser", fetch = FetchType.EAGER)
     private User user;
 }

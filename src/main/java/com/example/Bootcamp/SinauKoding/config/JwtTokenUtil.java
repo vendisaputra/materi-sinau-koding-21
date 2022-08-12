@@ -20,10 +20,11 @@ public class JwtTokenUtil {
     private String secret;
 
     //Untuk generate token
-    public String doGenerateToken(UserDetails userDetails){
+    public String doGenerateToken(User user){
         Map<String, Object> claims = new HashMap<>();
+        claims.put("role", user.getRole().getName());
 
-        return Jwts.builder().setClaims(claims).setSubject(userDetails.getUsername())
+        return Jwts.builder().setClaims(claims).setSubject(user.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
                 .signWith(SignatureAlgorithm.HS512, secret).compact();

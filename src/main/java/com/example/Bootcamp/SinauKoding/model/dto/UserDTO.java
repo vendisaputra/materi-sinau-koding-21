@@ -1,5 +1,6 @@
 package com.example.Bootcamp.SinauKoding.model.dto;
 
+import com.example.Bootcamp.SinauKoding.enumeration.RoleUser;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +16,8 @@ public class UserDTO {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String token;
+
+    private RoleUser role;
 
     private DetailUserDTO detailUser;
 }
