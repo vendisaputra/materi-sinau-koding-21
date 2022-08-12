@@ -9,12 +9,21 @@ import springfox.documentation.spi.service.contexts.SecurityContext;
 @SpringBootApplication
 public class BootcampSinauKodingApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(BootcampSinauKodingApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(BootcampSinauKodingApplication.class, args);
+    }
 
-	public static User session(){
-		return (User) SecurityContextHolder.getContext().getAuthentication();
-	}
+    public static User session() {
+        return (User) SecurityContextHolder.getContext().getAuthentication();
+    }
+
+    public static User getSession() {
+        try {
+            return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 }

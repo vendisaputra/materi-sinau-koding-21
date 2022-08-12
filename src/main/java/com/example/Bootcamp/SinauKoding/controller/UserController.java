@@ -1,9 +1,13 @@
 package com.example.Bootcamp.SinauKoding.controller;
 
+import com.example.Bootcamp.SinauKoding.BootcampSinauKodingApplication;
 import com.example.Bootcamp.SinauKoding.common.Response;
 import com.example.Bootcamp.SinauKoding.model.User;
 import com.example.Bootcamp.SinauKoding.model.dto.UserDTO;
 import com.example.Bootcamp.SinauKoding.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +24,10 @@ public class UserController {
     @DeleteMapping("/{id}")
     public Response deleteUser(@PathVariable Integer id) {
         if (service.deleteUser(id)){
-            System.out.print(SecurityContextHolder.getContext().getAuthentication());
+            User session = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+            System.out.println(session);
+
             return new Response("Berhasil dihapus", HttpStatus.OK);
         }
 
@@ -28,8 +35,12 @@ public class UserController {
     }
 
     @GetMapping
-    public Response findAllUser() {
-        System.out.print(SecurityContextHolder.getContext().getAuthentication());
+    public Response findAllUser() throws JsonProcessingException {
+        String session = BootcampSinauKodingApplication.getSession().getProfileName();
+//        ObjectWriter objectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
+//        String res = objectWriter.writeValueAsString(session);
+
+        System.out.println(session);
         return new Response(
                 service.findAllUser(),
                 service.findAllUser().size(),
@@ -52,6 +63,9 @@ public class UserController {
 
     @GetMapping("/find-by-id/{id}")
     public Response getById(@PathVariable Integer id){
+        User session = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        System.out.println(session);
         return new Response(service.findById(id), "Data ditemukan", HttpStatus.OK);
     }
 }
